@@ -120,7 +120,7 @@ ALTER TABLE Detalles_Ventas
 ADD CONSTRAINT fk_venta_detalle FOREIGN KEY (id_venta) REFERENCES Ventas (id_venta),
 ADD CONSTRAINT fk_producto_venta FOREIGN KEY (id_producto) REFERENCES Productos (id_producto);
 
---Eliminar la clave foránea actual fk_venta_detalle:
+-- Eliminar la clave foránea actual fk_venta_detalle:
 
 USE ferreteria_bd;
 
@@ -134,7 +134,7 @@ ALTER TABLE Detalles_Ventas
 ADD CONSTRAINT fk_venta_detalle FOREIGN KEY (id_venta) REFERENCES Ventas (id_venta) ON DELETE CASCADE;
 
 
---Eliminar la clave foránea actual fk_compra_detalle:
+-- Eliminar la clave foránea actual fk_compra_detalle:
 
 USE ferreteria_bd;
 
