@@ -33,3 +33,20 @@ import { pool } from "../../db_connection.js";
       });
     }
   };
+
+   // Registrar una nueva Venta
+  export const registrarVenta = async (req, res) => {
+    try {
+      const { id_cliente, id_empleado, fecha_venta, total_venta } = req.body;
+      const [result] = await pool.query(
+        'INSERT INTO ventas (id_cliente, id_empleado, fecha_venta, total_venta) VALUES (?, ?, ?, ?)',
+        [id_cliente, id_empleado, fecha_venta, total_venta]
+      );
+      res.status(201).json({ id_venta: result.insertId });
+    } catch (error) {
+      return res.status(500).json({
+        mensaje: 'Ha ocurrido un error al registrar la venta.',
+        error: error
+      });
+    }
+  };

@@ -10,4 +10,8 @@ router.get("/producto", obtenerProducto);
 // Ruta para obtenr un producto por su ID
 router.get("/producto/:id_producto", obtenerProductos);
 
+// Ruta para registrar un nuevo Producto
+router.post('/registrarproducto', registrarProducto);
+
+
 export default router;

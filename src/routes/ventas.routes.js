@@ -10,4 +10,7 @@ router.get("/ventas", obtenerVentas);
 // Ruta para obtenr una venta por su ID
 router.get("/venta/:id_venta", obtenerVenta);
 
+// Ruta para registrar una nueva Venta  
+router.post('/registrarventa', registrarVenta);
+
 export default router;

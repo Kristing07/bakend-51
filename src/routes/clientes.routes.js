@@ -9,7 +9,7 @@ router.get('/clientes', obtenerClientes);
 // Ruta para obtener un cliente por su ID
 router.get('/cliente/:id_cliente', obtenerCliente);
 
-// Ruta para registrar una nueva Categoría
+// Ruta para registrar un nuevo cliente
 router.post('/registrarcliente', registrarCliente);
 
 

@@ -36,3 +36,20 @@ import { pool } from "../../db_connection.js";
       });
     }
   };
+
+    // Registrar un nuevo Empleado
+  export const registrarEmpleado = async (req, res) => {
+    try {
+      const { primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, celular, cargo, fecha_contratacion} = req.body;
+      const [result] = await pool.query(
+        'INSERT INTO empleados (primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, celular, cargo, fecha_contratacion) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, celular, cargo, fecha_contratacion]
+      );
+      res.status(201).json({ id_empleado: result.insertId });
+    } catch (error) {
+      return res.status(500).json({
+        mensaje: 'Ha ocurrido un error al registrar el empleado.',
+        error: error
+      });
+    }
+  };

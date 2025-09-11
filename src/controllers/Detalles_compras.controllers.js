@@ -36,3 +36,20 @@ import { pool } from "../../db_connection.js";
       });
     }
   };
+
+    // Registrar un nuevo Detalle de Compra
+  export const registrarDetalleCompra = async (req, res) => {
+    try { 
+      const { id_compra, id_producto, cantidad, precio_unitario } = req.body; 
+      const [result] = await pool.query(
+        'INSERT INTO detalles_compras (id_compra, id_producto, cantidad, precio_unitario) VALUES (?, ?, ?, ?)',
+        [id_compra, id_producto, cantidad, precio_unitario]
+      );
+      res.status(201).json({ id_detalle_compra: result.insertId });
+    } catch (error) {
+      return res.status(500).json({
+        mensaje: 'Ha ocurrido un error al registrar el detalle de compra.',
+        error: error
+      });
+    }
+  };

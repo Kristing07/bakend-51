@@ -34,3 +34,20 @@ import { pool } from "../../db_connection.js";
       });
     }
   };
+
+  // Registrar un nuevo Usuario
+  export const registrarUsuario = async (req, res) => {
+    try {
+      const { usuario, contrasena } = req.body;
+      const [result] = await pool.query(
+        'INSERT INTO usuarios (usuario, contrasena) VALUES (?, ?)',
+        [usuario, contrasena]
+      );
+      res.status(201).json({ id_usuario: result.insertId });
+    } catch (error) {
+      return res.status(500).json({
+        mensaje: 'Ha ocurrido un error al registrar el usuario.',
+        error: error
+      });
+    }
+  };
