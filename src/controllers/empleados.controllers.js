@@ -53,3 +53,53 @@ import { pool } from "../../db_connection.js";
       });
     }
   };
+
+   // Eliminar un detalle de compra por su ID
+export const eliminarEmpleado = async (req, res) => {
+  try {
+    const id_empleado = req.params.id_empleado;
+    const [result] = await pool.query(
+      'DELETE FROM Empleados WHERE id_empleado = ?',
+      [id_empleado]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        mensaje: `Error al eliminar el Empleado. El ID ${id_empleado} no fue encontrado.`
+      });
+    }
+
+    // Respuesta sin contenido para indicar éxito
+    res.status(204).send();
+  } catch (error) {
+    return res.status(500).json({
+      mensaje: 'Ha ocurrido un error al eliminar el Empleado.',
+      error: error
+    });
+  }
+};
+
+//Controlador para actualizar parcialmente un empleado por su ID
+export const actualizarParcialEmpleado = async (req, res) => {
+  try {
+    const id_empleado = req.params.id_empleado;
+    const { primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, celular, cargo, fecha_contratacion} = req.body;
+    const [result] = await pool.query(
+      "UPDATE empleados SET primer_nombre = IFNULL(?, primer_nombre), segundo_nombre = IFNULL(?, segundo_nombre), primer_apellido = IFNULL(?, primer_apellido), segundo_apellido = IFNULL(?, segundo_apellido), celular = IFNULL(?, celular), cargo = IFNULL(?, cargo), fecha_contratacion = IFNULL(?, fecha_contratacion) WHERE id_empleado = ?",
+      [primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, celular, cargo, fecha_contratacion, id_empleado]
+    );
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        mensaje: `Error al actualizar el empleado. El ID ${id_empleado} no fue encontrado.`,
+      });
+    }
+    res.status(200).json({
+      mensaje: `Empleado con ID ${id_empleado} actualizado correctamente.`
+    });
+  } catch (error) {
+    return res.status(500).json({
+      mensaje: 'Ha ocurrido un error al actualizar el empleado.',
+      error: error
+    });
+  }
+};

@@ -50,3 +50,53 @@ import { pool } from "../../db_connection.js";
       });
     }
   };
+
+    // Eliminar un detalle de compra por su ID
+export const eliminarVenta = async (req, res) => {
+  try {
+    const id_venta = req.params.id_venta;
+    const [result] = await pool.query(
+      'DELETE FROM Ventas WHERE id_venta = ?',
+      [id_venta]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        mensaje: `Error al eliminar la venta. El ID ${id_venta} no fue encontrado.`
+      });
+    }
+
+    // Respuesta sin contenido para indicar éxito
+    res.status(204).send();
+  } catch (error) {
+    return res.status(500).json({
+      mensaje: 'Ha ocurrido un error al eliminar la venta.',
+      error: error
+    });
+  }
+};
+
+//Controlador para actualizar parcialmente una venta por su ID
+export const actualizarParcialVenta = async (req, res) => {
+  try {
+    const id_venta = req.params.id_venta;
+    const { id_cliente, id_empleado, fecha_venta, total_venta } = req.body;
+    const [result] = await pool.query(
+      'UPDATE ventas SET id_cliente = IFNULL(?, id_cliente), id_empleado = IFNULL(?, id_empleado), fecha_venta = IFNULL(?, fecha_venta), total_venta = IFNULL(?, total_venta) WHERE id_venta = ?',
+      [id_cliente, id_empleado, fecha_venta, total_venta, id_venta]
+    );
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        mensaje: `Error al actualizar la venta. El ID ${id_venta} no fue encontrado.`,
+      });
+    }
+    res.status(200).json({
+      mensaje: `Venta con ID ${id_venta} actualizada correctamente.`
+    });
+  } catch (error) {
+    return res.status(500).json({
+      mensaje: 'Ha ocurrido un error al actualizar la venta.',
+      error: error
+    });
+  }
+};

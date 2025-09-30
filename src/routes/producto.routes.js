@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { obtenerProducto, obtenerProductos } from "../controllers/producto.controllers.js";
+import { obtenerProducto, obtenerProductos,registrarProducto, eliminarProducto ,actualizarProductoPatch } from "../controllers/producto.controllers.js";
 
 const router = Router();
 
@@ -13,5 +13,10 @@ router.get("/producto/:id_producto", obtenerProductos);
 // Ruta para registrar un nuevo Producto
 router.post('/registrarproducto', registrarProducto);
 
+//ruta para eliminar un producto por su ID
+router.delete('/eliminarproducto/:id_producto', eliminarProducto);
+
+// Ruta para actualizar un producto por su ID
+router.put('/actualizarproducto/:id_producto', actualizarProductoPatch);
 
 export default router;

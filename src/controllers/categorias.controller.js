@@ -50,3 +50,59 @@ export const registrarCategoria = async (req, res) => {
     });
   }
 };
+
+//Eliminar Categoria por su ID
+  
+export const eliminarCategoria = async (req, res) => {
+  try{
+      const id_categoria = req.params.id_categoria;
+      const {result} = await pool.query('DELETE FROM Categorias WHERE id_categoria = ?',
+      [id_categoria]
+      );
+
+    if (result.affctedRows === 0) {
+      return res.status(404).json({
+        mensaje: `Error al eliminar la categoria. El ID ${id_categoria} no fue encontrado.`
+      });
+    }
+
+    //Respuestas sin contenido para indicar exito
+    res.status(204).send();
+  }catch (error) {
+      return res.status(500).json({
+        mensaje: ` Ha ocurrido un Error al eliminar la categoria.`,
+        error: error
+      });
+    }
+  };
+
+
+// Controlador para actualizar parcialmente una categoría por su ID
+export const actualizarCategoriaPatch = async (req, res) => {
+  try {
+    const { id_categoria } = req.params;
+    const datos = req.body;
+
+    const [result] = await pool.query(
+      'UPDATE categorias SET ? WHERE id_categoria = ?',
+      [datos, id_categoria]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        mensaje: `Categoria con ID ${id_categoria} no encontrada.`
+      });
+    }
+
+    res.status(200).json({
+      mensaje: `Categoria con ID ${id_categoria} actualizada.`
+    });
+  } catch (error) {
+    res.status(500).json({
+      mensaje: 'Error al actualizar la categoria.',
+      error
+    });
+  }
+};
+
+
