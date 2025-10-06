@@ -13,6 +13,8 @@ export const obtenerCategorias = async (req, res) => {
   }
 };
 
+
+
 // Obtener una categoría por su ID
 export const obtenerCategoria = async (req, res) => {
   try {
@@ -34,6 +36,8 @@ export const obtenerCategoria = async (req, res) => {
   }
 };
 
+
+
 // Registrar una nueva Categoría
 export const registrarCategoria = async (req, res) => {
   try {
@@ -52,7 +56,6 @@ export const registrarCategoria = async (req, res) => {
 };
 
 //Eliminar Categoria por su ID
-  
 export const eliminarCategoria = async (req, res) => {
   try{
       const id_categoria = req.params.id_categoria;
