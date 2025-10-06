@@ -13,8 +13,6 @@ export const obtenerCategorias = async (req, res) => {
   }
 };
 
-
-
 // Obtener una categoría por su ID
 export const obtenerCategoria = async (req, res) => {
   try {
@@ -35,8 +33,6 @@ export const obtenerCategoria = async (req, res) => {
     });
   }
 };
-
-
 
 // Registrar una nueva Categoría
 export const registrarCategoria = async (req, res) => {
@@ -79,7 +75,6 @@ export const eliminarCategoria = async (req, res) => {
     }
   };
 
-
 // Controlador para actualizar parcialmente una categoría por su ID
 export const actualizarCategoriaPatch = async (req, res) => {
   try {
@@ -107,5 +102,3 @@ export const actualizarCategoriaPatch = async (req, res) => {
     });
   }
 };
-
-
