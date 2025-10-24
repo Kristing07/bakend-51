@@ -1,12 +1,10 @@
 import { Router } from "express";
-import { obtenerEmpleados, obtenerEmpleado, registrarEmpleado, eliminarEmpleado, actualizarParcialEmpleado } from "../controllers/empleados.controllers.js";
+import { obtenerEmpleados, obtenerEmpleado,registrarEmpleado, eliminarEmpleado, actualizarEmpleadosPatch } from "../controllers/empleado.controller.js";
 
 const router = Router();
 
 // Ruta para obtener todos los empleados
-router.get("/empleado", obtenerEmpleados);
-
-
+router.get("/empleados", obtenerEmpleados);
 
 // Ruta para obtenr un empleado por su ID
 router.get("/empleado/:id_empleado", obtenerEmpleado);
@@ -18,6 +16,6 @@ router.post('/registrarempleado', registrarEmpleado);
 router.delete('/eliminarempleado/:id_empleado', eliminarEmpleado);
 
 // Ruta para actualizar un empleado por su ID
-router.put('/actualizarempleado/:id_empleado', actualizarParcialEmpleado);
+router.put('/actualizarempleado/:id_empleado', actualizarEmpleadosPatch);
 
 export default router;

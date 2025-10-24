@@ -3,7 +3,7 @@ import { pool } from "../../db_connection.js";
   // Obtener todas las usuarios
   export const obtenerUsuarios = async (req, res) => {
     try {
-      const [result] = await pool.query("SELECT * FROM usuarios");
+      const [result] = await pool.query("SELECT * FROM Usuarios");
       res.json(result);
     } catch (error) {
       return res.status(500).json({
@@ -18,7 +18,7 @@ import { pool } from "../../db_connection.js";
     try {
       const id_usuario = req.params.id_usuario;
       const [result] = await pool.query(
-        "SELECT * FROM usuarios WHERE id_usuario= ?",
+        "SELECT * FROM Usuarios WHERE id_usuario= ?",
         [id_usuario]
       );
       if (result.length <= 0) {
@@ -40,7 +40,7 @@ import { pool } from "../../db_connection.js";
     try {
       const { usuario, contrasena } = req.body;
       const [result] = await pool.query(
-        'INSERT INTO usuarios (usuario, contrasena) VALUES (?, ?)',
+        'INSERT INTO Usuarios (usuario, contrasena) VALUES (?, ?)',
         [usuario, contrasena]
       );
       res.status(201).json({ id_usuario: result.insertId });
@@ -52,7 +52,7 @@ import { pool } from "../../db_connection.js";
     }
   };
 
-  
+
    // Eliminar un detalle de compra por su ID
 export const eliminarUsuario = async (req, res) => {
   try {
@@ -78,27 +78,25 @@ export const eliminarUsuario = async (req, res) => {
   }
 };
 
-//Controlador para actualizar parcialmente un usuario por su ID
-  export const actualizarParcialUsuario = async (req, res) => {
-    try {
-      const id_usuario = req.params.id_usuario;
-      const { usuario, contrasena } = req.body;
-      const [result] = await pool.query(
-        "UPDATE usuarios SET usuario = IFNULL(?, usuario), contrasena = IFNULL(?, contrasena) WHERE id_usuario = ?",
-        [usuario, contrasena, id_usuario]
-      );
-      if (result.affectedRows === 0) {
-        return res.status(404).json({
-          mensaje: `Error al actualizar el usuario. El ID ${id_usuario} no fue encontrado.`,
-        });
-      }
-      res.status(200).json({
-        mensaje: `Usuario con ID ${id_usuario} actualizado correctamente.`
-      });
-    } catch (error) {
-      return res.status(500).json({
-        mensaje: "Ha ocurrido un error al actualizar el usuario.",  
-        error: error,
-      });
+
+  
+// Controlador para actualizar parcialmente un Usuarios por su ID
+export const actualizarUsuariosPatch = async (req, res) => {
+  try {
+    const { id_usuario } = req.params;
+    const datos = req.body;
+
+    const [result] = await pool.query(
+      'UPDATE Usuarios SET ? WHERE id_usuario = ?',
+      [datos, id_usuario]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ mensaje: `Usuarios con ID ${id_usuario} no encontrada.` });
     }
-  };
+
+    res.status(200).json({ mensaje: `Usuarios con ID ${id_usuario} actualizada.` });
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al actualizar el Usuarios.', error });
+  }
+};
