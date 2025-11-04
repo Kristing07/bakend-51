@@ -38,10 +38,12 @@ export const obtenerCategoria = async (req, res) => {
 export const registrarCategoria = async (req, res) => {
   try {
     const { nombre_categoria, descripcion_categoria } = req.body;
+
     const [result] = await pool.query(
       "INSERT INTO categorias (nombre_categoria, descripcion_categoria) VALUES (?, ?)",
       [nombre_categoria, descripcion_categoria]
     );
+
     res.status(201).json({ id_categoria: result.insertId });
   } catch (error) {
     return res.status(500).json({
@@ -51,32 +53,33 @@ export const registrarCategoria = async (req, res) => {
   }
 };
 
-//Eliminar Categoria por su ID
+// Eliminar una categoría por su ID
 export const eliminarCategoria = async (req, res) => {
-  try{
-      const id_categoria = req.params.id_categoria;
-      const {result} = await pool.query('DELETE FROM Categorias WHERE id_categoria = ?',
+  try {
+    const id_categoria = req.params.id_categoria;
+    const [result] = await pool.query(
+      "DELETE FROM categorias WHERE id_categoria = ?",
       [id_categoria]
-      );
+    );
 
-    if (result.affctedRows === 0) {
+    if (result.affectedRows === 0) {
       return res.status(404).json({
-        mensaje: `Error al eliminar la categoria. El ID ${id_categoria} no fue encontrado.`
+        mensaje: `Error al eliminar la categoria. El ID ${id_categoria} no fue encontrado.`,
       });
     }
 
-    //Respuestas sin contenido para indicar exito
+    // Respuesta sin contenido para indicar éxito
     res.status(204).send();
-  }catch (error) {
-      return res.status(500).json({
-        mensaje: ` Ha ocurrido un Error al eliminar la categoria.`,
-        error: error
-      });
-    }
-  };
+  } catch (error) {
+    return res.status(500).json({
+      mensaje: "Ha ocurrido un error al eliminar la categoria.",
+      error: error,
+    });
+  }
+};
 
-// Controlador para actualizar parcialmente una categoría por su ID
-export const actualizarCategoriaPatch = async (req, res) => {
+// Controlador para actualizar parcialmente una categoria por su ID
+export const actualizarCategortaPatch = async (req, res) => {
   try {
     const { id_categoria } = req.params;
     const datos = req.body;
@@ -87,18 +90,11 @@ export const actualizarCategoriaPatch = async (req, res) => {
     );
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({
-        mensaje: `Categoria con ID ${id_categoria} no encontrada.`
-      });
+      return res.status(404).json({ mensaje: `Categoria con ID ${id_categoria} no encontrada.` });
     }
 
-    res.status(200).json({
-      mensaje: `Categoria con ID ${id_categoria} actualizada.`
-    });
+    res.status(200).json({ mensaje: `Categoria con ID ${id_categoria} actualizada.` });
   } catch (error) {
-    res.status(500).json({
-      mensaje: 'Error al actualizar la categoria.',
-      error
-    });
+    res.status(500).json({ mensaje: 'Error al actualizar la categoría.', error });
   }
 };
