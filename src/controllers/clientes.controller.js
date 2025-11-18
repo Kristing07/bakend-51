@@ -1,6 +1,6 @@
 import { pool } from "../../db_connection.js";
 
-// Obtener todas las categorías
+// Obtener todas las clientes
 export const obtenerClientes = async (req, res) => {
   try {
     const [result] = await pool.query("SELECT * FROM clientes");
@@ -34,41 +34,43 @@ export const obtenerCliente = async (req, res) => {
   }
 };
 
-// Registrar una nueva Cliente
+
+// Registrar un nuevo Cliente
 export const registrarCliente = async (req, res) => {
   try {
-    const { primer_nombre,
-          segundo_nombre,
-        primer_apellido,
-      segundo_apellido, telefono, 
-    direccion, cedula } 
-    = req.body;
+    const { primer_nombre
+      , segundo_nombre,
+      primer_apellido,
+      segundo_apellido, celular
+      , direccion,
+      cedula
+    } = req.body;
     const [result] = await pool.query(
-      'INSERT INTO clientes (primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, telefono, direccion, cedula) VALUES (?, ?, ?, ?, ?, ?, ?)',
-      [primer_nombre,
-         segundo_nombre, primer_apellido, segundo_apellido, telefono, direccion, cedula ]
+      'INSERT INTO clientes (primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, celular, direccion, cedula) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [primer_nombre
+        , segundo_nombre, primer_apellido, segundo_apellido, celular, direccion, cedula]
     );
-    res.status(201).json({ id_categoria: result.insertId });
+    res.status(201).json({ id_cliente: result.insertId });
   } catch (error) {
     return res.status(500).json({
-      mensaje: "Ha ocurrido un error al registrar la cliente.",
-      error: error,
+      mensaje: 'Ha ocurrido un error al registrar el cliente.',
+      error: error
     });
   }
 };
 
 // Eliminar una categoría por su ID
-export const eliminarCliente = async (req, res) => {
+export const eliminarcliente = async (req, res) => {
   try {
     const id_cliente = req.params.id_cliente;
     const [result] = await pool.query(
-      'DELETE FROM Clientes WHERE id_cliente = ?',
+      "DELETE FROM Clientes WHERE id_cliente = ?",
       [id_cliente]
     );
 
     if (result.affectedRows === 0) {
       return res.status(404).json({
-        mensaje: `Error al eliminar la categoria. El ID ${id_cliente} no fue encontrado.`
+        mensaje: `Error al eliminar el cliente. El ID ${id_cliente} no fue encontrado.`,
       });
     }
 
@@ -76,40 +78,29 @@ export const eliminarCliente = async (req, res) => {
     res.status(204).send();
   } catch (error) {
     return res.status(500).json({
-      mensaje: 'Ha ocurrido un error al eliminar el cliente.',
-      error: error
+      mensaje: "Ha ocurrido un error al eliminar el cliente.",
+      error: error,
     });
   }
 };
 
-//Controlador para actualizar un cliente por su ID
+// Controlador para actualizar parcialmente un cliente por su ID
+
 export const actualizarClientePatch = async (req, res) => {
   try {
-    const id_cliente = req.params.id_cliente;
-    const { primer_nombre
-      , segundo_nombre,
-      primer_apellido,
-      segundo_apellido, telefono
-      , direccion,
-      cedula } = req.body;
+    const { id_cliente } = req.params;
+    const datos = req.body;
     const [result] = await pool.query(
-      'UPDATE clientes SET primer_nombre = IFNULL(?, primer_nombre), segundo_nombre = IFNULL(?, segundo_nombre), primer_apellido = IFNULL(?, primer_apellido), segundo_apellido = IFNULL(?, segundo_apellido), telefono = IFNULL(?, telefono), direccion = IFNULL(?, direccion), cedula = IFNULL(?, cedula) WHERE id_cliente = ?',
-      [primer_nombre
-        , segundo_nombre, primer_apellido, segundo_apellido, telefono, direccion, cedula, id_cliente]
+      "UPDATE clientes SET ? WHERE id_cliente = ?",
+      [datos, id_cliente]
     );
     if (result.affectedRows === 0) {
-      return res.status(404).json({
-        mensaje: `Error al actualizar la categoria. El ID ${id_cliente} no fue encontrado.`,
-      });
+      return res
+        .status(404)
+        .json({ mensaje: `Cliente con ID ${id_cliente} no encontrado.` });
     }
-    res.status(200).json({
-    mensaje: `Cliente con ID ${id_cliente} actualizada correctamente.`
-    });
-  }
-  catch (error) {
-    return res.status(500).json({
-      mensaje: 'Ha ocurrido un error al actualizar el cliente.',
-      error: error
-    });
+    res.status(200).json({ mensaje: `Cliente con ID ${id_cliente} actualizado.` });
+  } catch (error) {
+    res.status(500).json({ mensaje: "Error al actualizar el cliente.", error });
   }
 };

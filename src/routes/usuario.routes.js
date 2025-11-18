@@ -17,6 +17,6 @@ router.post('/registrarusuario', registrarUsuario);
 router.delete('/eliminarusuario/:id_usuario', eliminarUsuario);
 
 // Ruta para actualizar un usuario por su ID
-router.put('/actualizarusuario/:id_usuario', actualizarUsuariosPatch);
+router.patch('/actualizarusuario/:id_usuario', actualizarUsuariosPatch);
 
 export default router;

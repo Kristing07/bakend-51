@@ -100,3 +100,4 @@ export const actualizarUsuariosPatch = async (req, res) => {
     res.status(500).json({ mensaje: 'Error al actualizar el Usuarios.', error });
   }
 };
+
